@@ -1,0 +1,77 @@
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.Building {
+  position: relative;
+  background: #ddd;
+  display: flex;
+  flex-direction: column;
+  max-width: 50rem;
+}
+
+.Floor {
+  position: relative;
+  background: rgba(100,100,100, .75);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  &:before {
+    content: attr(data-floor-number);
+    color: rgba(255,255,255,.66);
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 1rem;
+  }
+  &:after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,.8);
+    bottom: 0;
+    z-index: 1;
+  }
+}
+
+.Shafts {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.Shaft {
+  background: rgba(200,200,0,.35);
+  flex: 0.25;
+  margin: 0 3rem;
+  // padding: .5rem;
+}
+
+.Lift {
+  // --height: calc((100% - ((var(--floors) - 1) * 0)) / var(--floors));
+  // --percent: (var(--lift-position) / (var(--floors))) * 100%;
+
+  --height: calc(1 / var(--floors) * 100%);
+  --percent: calc(var(--height) * var(--lift-position));
+  --top: calc(100% - (var(--percent) + var(--height)));
+
+  position: relative;
+  width: 100%;
+  background: rgba(10,10,200,.88);
+
+  height: var(--height);
+  top: var(--top);
+}

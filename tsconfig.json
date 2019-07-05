@@ -1,0 +1,7 @@
+{
+  "include": [
+    "*.ts",
+    "./interfaces/*.ts",
+    "./implementations/*.ts"
+  ]
+}
