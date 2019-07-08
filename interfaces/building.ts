@@ -1,6 +1,6 @@
 import { Lift } from "./lift";
-import { Person } from "./person";
 import { Controller } from "./controller";
+import { Person } from "../implementations/person";
 
 export interface Building {
   controller: Controller;
@@ -16,7 +16,7 @@ export interface Building {
   addPerson(person: Person): void;
 
   // Communication with controller
-  embarkPeopleAt(floor: number): void;
+  embarkPeopleAt(floor: number): Person[];
   disembarkPeople(people: Person[]): void;
 
   // Stats
@@ -24,4 +24,7 @@ export interface Building {
   averageWait():   number;
   averageInLift(): number;
   totalPeople():   number;
+
+  // For renderer
+  peopleAtFloor(floor: number): Person[];
 }

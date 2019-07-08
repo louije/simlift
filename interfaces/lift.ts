@@ -1,20 +1,23 @@
-import { Person } from "./person";
+import { Person } from "../implementations/person";
+import { Controller } from "../interfaces/controller";
 
 export enum LiftState {
-  Opening,
+  Arriving,
   Open,
-  Closing,
+  Departing,
   MovingUp,
   MovingDown,
 }
 
 export enum Direction {
+  None,
   Up,
   Down,
 }
 
 export interface Lift {
   id: number;
+  controller: Controller;
   floorCount: number;
   capacity: number;
   people: Person[];

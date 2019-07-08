@@ -1,30 +1,55 @@
 import { Building } from "../interfaces/building";
 import { Lift } from "../interfaces/lift";
-import { Person } from "../interfaces/person";
 import { Controller } from "../interfaces/controller";
+import { Person } from "../implementations/person";
 
 export class BasicBuilding implements Building {
-  private activePeople: Person[];
-  private disembarkedPeople: Person[];
+  private activePeople: Person[] = [];
+  private disembarkedPeople: Person[] = [];
+  private get nextPersonID(): number {
+    return this.activePeople.length + this.disembarkedPeople.length;
+  }
 
   constructor(public floors: number,
               public lifts: Lift[],
               public controller: Controller) {}
 
-  // Communication with Simulator
+  // Messages from Simulator
   tick(): void {
-    const randomLift = this.lifts[Math.floor(Math.random() * this.lifts.length)];
-    randomLift.position += (Math.random() < 0.5) ? 1 : -1;
+    this.controller.tick();
   }
-  addPerson(person: Person): void {}
+  addPerson(person: Person): void {
+    person.id = this.nextPersonID;
+    this.activePeople.push(person);
 
-  // Communication with controller
-  embarkPeopleAt(floor: number): void {}
-  disembarkPeople(people: Person[]): void {}
+    this.controller.called(person.currentFloor, person.desiredFloor);
+  }
+
+  // Messages from controller
+  embarkPeopleAt(floor: number): Person[] {
+    const people = this.peopleAtFloor(floor);
+    people.forEach(p => p.tsEmbarked = Date.now());
+    return people;
+  }
+  disembarkPeople(people: Person[]): void {
+    people.forEach((p) => {
+      p.tsDisembarked = Date.now();
+      this.disembarkedPeople.push(p);
+    });
+    this.activePeople = this.activePeople.filter(p => people.indexOf(p) === -1);
+  }
 
   // Stats
   averageTrip():   number { return 0; }
   averageWait():   number { return 0; }
   averageInLift(): number { return 0; }
   totalPeople():   number { return 0; }
+
+  // Rendering & testing
+  get waitingPeople(): Person[] {
+    return this.activePeople.filter(p => !p.tsEmbarked);
+  }
+  peopleAtFloor(floor: number): Person[] {
+    return this.waitingPeople.filter(p => p.currentFloor === floor);
+  }
 }

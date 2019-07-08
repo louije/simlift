@@ -1,6 +1,4 @@
-import { Person } from "../interfaces/person";
-
-export class BasicPerson implements Person {
+export class Person {
   tsArrived:     number;
   tsEmbarked:    number;
   tsDisembarked: number;
