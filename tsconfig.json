@@ -3,5 +3,11 @@
     "*.ts",
     "./interfaces/*.ts",
     "./implementations/*.ts"
-  ]
+  ],
+  "parcel-plugin-typescript": {
+    "transpileOnly": false
+  },
+  "compilerOptions": {
+    "target": "ESNext"
+  }
 }

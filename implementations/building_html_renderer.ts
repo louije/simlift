@@ -5,15 +5,15 @@ import { Lift } from "../interfaces/lift";
 export class BuildingHTMLRenderer implements BuildingRenderer {
   building: Building;
 
-  shaft(id: number, initialPosition = 0): string {
+  shaft(lift: Lift): string {
     return `
-      <div class="Shaft" data-shaft-id="${id}">
-        <div class="Lift" style="--lift-position: ${initialPosition}"></div>
+      <div class="Shaft" data-shaft-id="${lift.id}">
+        <div class="Lift" style="--lift-position: ${lift.position}"></div>
       </div>
     `;
   }
-  shafts(shafts: number): string {
-    const shaftsHTML = Array.from(Array(shafts)).map((_, x) => { return this.shaft(x); }).join("");
+  shafts(lifts: Lift[]): string {
+    const shaftsHTML = lifts.map(lift => this.shaft(lift)).join("");
     return `
       <div class="Shafts">
         ${shaftsHTML}
@@ -35,10 +35,10 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
 
   root(floors: number, lifts: Lift[]): string {
     const floorsHTML = this.floors(floors);
-    const shaftsHTML = this.shafts(lifts.length);
+    const shaftsHTML = this.shafts(lifts);
 
     return `
-      <div class="Building" style="--floors: ${floors}; --lifts: ${lifts}">
+      <div class="Building" style="--floors: ${floors}; --lifts: ${lifts.length}">
         ${floorsHTML}
         ${shaftsHTML}
       </div>

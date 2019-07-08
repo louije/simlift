@@ -2,17 +2,24 @@ import { Lift, LiftState, Direction } from "../interfaces/lift";
 import { Person } from "../interfaces/person";
 
 export class BasicLift implements Lift {
-  capacity: 1000;
+  private liftPosition: number = 0;
+
+  capacity = 1000;
   people: Person[];
   state: LiftState.Open;
-  position: 0;
 
-  constructor(public id: number) {}
-
-  calledTo(direction: Direction): void {
-
+  get topFloor(): number {
+    return this.floorCount - 1;
   }
-  goingTo(): number {
-    return 0;
+  get position(): number {
+    return this.liftPosition;
   }
+  set position(newValue: number) {
+    this.liftPosition = Math.max(Math.min(this.topFloor, newValue), 0);
+  }
+
+  constructor(public id: number, public floorCount: number) {}
+
+  tick(): void {}
+  addStop(floor: number): void {}
 }

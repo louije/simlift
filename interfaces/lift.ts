@@ -14,12 +14,13 @@ export enum Direction {
 }
 
 export interface Lift {
-  id:       number;
+  id: number;
+  floorCount: number;
   capacity: number;
   people: Person[];
   state: LiftState;
   position: number;
 
-  calledTo(floor: number, direction?: Direction, destination?: number): void;
-  goingTo(): number; // is it necessary in the interface? lift is responsible for its own goal.
+  tick(): void;
+  addStop(floor: number): void;
 }

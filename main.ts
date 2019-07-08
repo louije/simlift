@@ -1,9 +1,32 @@
 import { Simulator } from "./simulator";
-import { BasicLift } from "./implementations/basic_lift";
+
 import { Lift } from "./interfaces/lift";
+import { Controller } from "./interfaces/controller";
+import { Building } from "./interfaces/building";
+
+import { BasicBuilding } from "./implementations/basic_building";
+import { BasicLift } from "./implementations/basic_lift";
+import { BasicController } from "./implementations/basic_controller";
 import { BuildingHTMLRenderer } from "./implementations/building_html_renderer";
 
+declare global {
+  interface Window {
+    SL: Simulator;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const lifts: Lift[] = [0, 1, 2].map(idx => new BasicLift(idx));
-  window.SL = new Simulator(9, lifts, document.querySelector(".World"), new BuildingHTMLRenderer());
+  const building = createBasicWorld();
+  window.SL = new Simulator(building, document.querySelector(".World"), new BuildingHTMLRenderer());
 });
+
+function createBasicWorld(): Building {
+  const floors = 9;
+  const lifts: Lift[] = [0, 1, 2].map(idx => new BasicLift(idx, floors));
+
+  const controller: Controller = new BasicController();
+  const building: Building = new BasicBuilding(floors, lifts, controller);
+  controller.building = building;
+
+  return building;
+}
