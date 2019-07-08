@@ -55,23 +55,21 @@ body {
 
 .Shaft {
   background: rgba(200,200,0,.35);
-  flex: 0.25;
+  width: 3rem;
   margin: 0 3rem;
   // padding: .5rem;
 }
 
 .Lift {
-  // --height: calc((100% - ((var(--floors) - 1) * 0)) / var(--floors));
-  // --percent: (var(--lift-position) / (var(--floors))) * 100%;
-
   --height: calc(1 / var(--floors) * 100%);
-  --percent: calc(var(--height) * var(--lift-position));
-  --top: calc(100% - (var(--percent) + var(--height)));
 
   position: relative;
   width: 100%;
   background: rgba(10,10,200,.88);
 
   height: var(--height);
-  top: var(--top);
+  top: calc(100% - var(--height));
+  transform: translateY(calc(-100% * var(--lift-position)));
+
+  // transition: transform .25s ease;
 }
