@@ -1,3 +1,4 @@
+import Settings from "../settings.json";
 import { Lift, LiftState, Direction } from "../interfaces/lift";
 import { Controller } from "../interfaces/controller";
 import { Person } from "../implementations/person";
@@ -40,15 +41,17 @@ export class BasicLift implements Lift {
         this.state = this.directionFor(this.nextStop());
         break;
       case LiftState.MovingUp:
-        this.position += 0.25;
-        if (this.atLevel(this.position, this.nextStop())) {
+        this.position += Settings.lifts.speed;
+        if (this.atLevel(this.nextStop(), Direction.Up)) {
+          this.position = this.nextStop();
           this.state = LiftState.Arriving;
           break;
         }
         break;
       case LiftState.MovingDown:
-        this.position -= 0.25;
-        if (this.atLevel(this.position, this.nextStop())) {
+        this.position -= Settings.lifts.speed;
+        if (this.atLevel(this.nextStop(), Direction.Down)) {
+          this.position = this.nextStop();
           this.state = LiftState.Arriving;
           break;
         }
@@ -75,11 +78,27 @@ export class BasicLift implements Lift {
     console.warn("directionFor called when for current floor", floor, this);
     return LiftState.Open;
   }
-  atLevel(position: number, goal: number = undefined): boolean {
-    if (goal) {
-      return position === goal;
+  currentLevel(direction: Direction): number | undefined {
+    const position = this.position;
+    if (Math.ceil(position) === position) {
+      return position;
     }
-    return Math.floor(position) === position;
+    switch (direction) {
+      case Direction.Up:
+        if (Math.floor(position) !== Math.floor(position + Settings.lifts.speed)) {
+          return Math.floor(position + Settings.lifts.speed);
+        }
+        break;
+      case Direction.Down:
+        if (Math.floor(position) !== Math.floor(position - Settings.lifts.speed)) {
+          return Math.floor(position);
+        }
+        break;
+    }
+    return undefined;
   }
-
+  atLevel(goal: number, direction: Direction): boolean {
+    const position = this.position;
+    return this.currentLevel(direction) === goal;
+  }
 }

@@ -8,6 +8,9 @@
     "transpileOnly": false
   },
   "compilerOptions": {
-    "target": "ESNext"
+    "target": "ESNext",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

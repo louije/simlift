@@ -112,3 +112,26 @@ body {
 
   // transition: transform .25s ease;
 }
+
+/*
+.Lift--arriving,
+.Lift--movingUp,
+.Lift--movingDown {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc(50% - 1px);
+    background: rgba(50,50,50,.75);
+    z-index: -1;
+  }
+  &:before {
+    // left: 0;
+  }
+  &:after {
+    // right: 0;
+  }
+}
+*/

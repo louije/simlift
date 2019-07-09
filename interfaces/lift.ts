@@ -2,11 +2,11 @@ import { Person } from "../implementations/person";
 import { Controller } from "../interfaces/controller";
 
 export enum LiftState {
-  Arriving,
-  Open,
-  Departing,
-  MovingUp,
-  MovingDown,
+  Arriving = "arriving",
+  Open = "open",
+  Departing = "departing",
+  MovingUp = "movingUp",
+  MovingDown = "movingDown",
 }
 
 export enum Direction {

@@ -13,7 +13,7 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
     const peopleHTML = this.people(lift.people, "traveling");
     return `
       <div class="Shaft" data-shaft-id="${lift.id}">
-        <div class="Lift" style="--lift-position: ${lift.position}">
+        <div class="Lift Lift--${lift.state}" style="--lift-position: ${lift.position}">
           ${peopleHTML}
         </div>
       </div>

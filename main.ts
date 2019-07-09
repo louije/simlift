@@ -1,3 +1,5 @@
+import Settings from "./settings.json";
+
 import { arrayTo } from "./util/array_utils";
 
 import { Simulator } from "./simulator";
@@ -23,9 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function createBasicWorld(): Building {
-  const floors = 9;
+  const floors = Settings.floors;
   const controller: Controller = new BasicController();
-  const lifts: Lift[] = arrayTo(0).map(idx => new BasicLift(idx, controller, floors));
+  const lifts: Lift[] = arrayTo(Settings.lifts.count - 1)
+                               .map(idx => new BasicLift(idx, controller, floors));
 
   const building: Building = new BasicBuilding(floors, lifts, controller);
   controller.building = building;

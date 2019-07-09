@@ -1,3 +1,4 @@
+import Settings from "./settings.json";
 import { Building } from "./interfaces/building";
 import { BuildingRenderer } from "./interfaces/building_renderer";
 import { Lift } from "./interfaces/lift";
@@ -15,8 +16,10 @@ export class Simulator {
   loop() {
     this.randomEvents();
     this.building.tick();
-    window.requestAnimationFrame(this.render.bind(this));
-    window.setTimeout(this.loop.bind(this), 250);
+    window.requestAnimationFrame(() => {
+      this.render();
+      this.loop();
+    });
   }
 
   render() {
@@ -24,7 +27,7 @@ export class Simulator {
   }
 
   private randomEvents() {
-    if (Math.random() * 100 < 10) {
+    if (Math.random() * 100 < Settings.events_probability.new_person) {
       this.createPerson();
     }
   }
