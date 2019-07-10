@@ -8,6 +8,6 @@ export function arrayTo(to: number, from: number = 0): number[] {
   return ar;
 }
 
-export function arraySample(array: Array<T>): T {
+export function arraySample<T>(array: Array<T>): T {
   return array[Math.floor(Math.random() * array.length)];
 }

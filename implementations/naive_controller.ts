@@ -28,6 +28,25 @@ export class NaiveController implements Controller {
     lift.peopleEntering(embarkedPeople);
   }
 
+  sortStopsForLift(lift: Lift, stops: number[]): number[] {
+    const pos = lift.position;
+    let sortedStops: number[];
+
+    const stopsBelow = stops.filter(s => s < pos);
+    const stopsAbove = stops.filter(s => s >= pos);
+
+    if (lift.state === LiftState.MovingDown) {
+      sortedStops = stopsBelow.sort((a, b) => a - b).concat(stopsAbove.sort());
+    } else if (lift.state === LiftState.MovingUp) {
+      sortedStops = stopsAbove.sort().concat(stopsBelow.sort((a, b) => a - b));
+    } else {
+      // Sort by proximity? really?
+      sortedStops = stops.sort((a, b) => Math.abs(a - pos) - Math.abs(b - pos));
+    }
+
+    return sortedStops;
+  }
+
   private bestLift(forFloor: number, direction: Direction): Lift {
     // TODO: decouple lift direction from state. It can be open and still going down.
 

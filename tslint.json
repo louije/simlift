@@ -6,7 +6,9 @@
     "jsRules": {},
     "rules": {
       "import-name": [ true, { "settingsJson": "Settings" }],
-      "quotemark": [true, "double", "avoid-escape", "avoid-template"]
+      "max-line-length": [ true, 140 ],
+      "quotemark": [true, "double", "avoid-escape", "avoid-template"],
+      "align": [true, "statements", "parameters"]
     },
     "rulesDirectory": []
 }

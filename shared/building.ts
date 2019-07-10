@@ -17,10 +17,10 @@ export interface Buildingish {
   peopleAtFloor(floor: number): Person[];
 
   // Stats
-  averageTrip():   number;
-  averageWait():   number;
-  averageInLift(): number;
-  totalPeople():   number;
+  averageTrip():       number;
+  averageWait():       number;
+  averageInLift():     number;
+  totalPeopleServed(): number;
 
   // For renderer
   peopleVisibleAtFloor(floor: number): Person[];
@@ -62,17 +62,31 @@ export class Building implements Buildingish {
     this.activePeople = this.activePeople.filter(p => people.indexOf(p) === -1);
   }
 
-  // Stats
-  averageTrip():   number { return 0; }
-  averageWait():   number { return 0; }
-  averageInLift(): number { return 0; }
-  totalPeople():   number { return 0; }
-
   get waitingPeople(): Person[] {
     return this.activePeople.filter(p => !p.tsEmbarked);
   }
   peopleAtFloor(floor: number): Person[] {
     return this.waitingPeople.filter(p => p.currentFloor === floor);
+  }
+
+  // Stats
+  averageTrip(): number {
+    return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
+      return sum + (p.tsDisembarked - p.tsArrived);
+    }, 0);
+  }
+  averageWait(): number {
+    return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
+      return sum + (p.tsEmbarked - p.tsArrived);
+    }, 0);
+  }
+  averageInLift(): number {
+    return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
+      return sum + (p.tsDisembarked - p.tsEmbarked);
+    }, 0);
+  }
+  totalPeopleServed(): number {
+    return this.disembarkedPeople.length;
   }
 
   // For the rendering.

@@ -1,15 +1,11 @@
 import Settings from "./settings.json";
-
 import { arrayTo } from "./util/array_utils";
-
-import { Simulator } from "./simulator";
-
-import { Lift } from "./shared/lift";
+import { Simulator } from "./shared/simulator";
+import { Lift, BasicLift } from "./shared/lift";
 import { Controller } from "./shared/controller";
 import { Building } from "./shared/building";
 import { BuildingHTMLRenderer } from "./shared/building_renderer";
 
-import { BasicLift } from "./implementations/basic_lift";
 import { NaiveController } from "./implementations/naive_controller";
 
 declare global {
