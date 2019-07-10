@@ -18,7 +18,7 @@ export class Simulator {
   loop() {
     this.randomEvents();
     this.building.tick();
-    window.setTimeout(this.loop.bind(this), Settings.refresh_rate);
+    window.setTimeout(this.loop.bind(this), Settings.simulation_timeout);
     window.requestAnimationFrame(this.render.bind(this));
   }
 

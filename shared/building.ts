@@ -20,7 +20,7 @@ export interface Buildingish {
   averageTrip():       number;
   averageWait():       number;
   averageInLift():     number;
-  totalPeopleServed(): number;
+  totalPeopleTransported(): number;
 
   // For renderer
   peopleVisibleAtFloor(floor: number): Person[];
@@ -73,19 +73,19 @@ export class Building implements Buildingish {
   averageTrip(): number {
     return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
       return sum + (p.tsDisembarked - p.tsArrived);
-    }, 0);
+    }, 0) / this.totalPeopleTransported();
   }
   averageWait(): number {
     return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
       return sum + (p.tsEmbarked - p.tsArrived);
-    }, 0);
+    }, 0) / this.totalPeopleTransported();
   }
   averageInLift(): number {
     return this.disembarkedPeople.reduce((sum: number, p: Person): number => {
       return sum + (p.tsDisembarked - p.tsEmbarked);
-    }, 0);
+    }, 0) / this.totalPeopleTransported();
   }
-  totalPeopleServed(): number {
+  totalPeopleTransported(): number {
     return this.disembarkedPeople.length;
   }
 
