@@ -18,6 +18,7 @@ export interface Building {
   // Communication with controller
   embarkPeopleAt(floor: number, capacity: number): Person[];
   disembarkPeople(people: Person[]): void;
+  peopleAtFloor(floor: number): Person[];
 
   // Stats
   averageTrip():   number;
@@ -26,5 +27,5 @@ export interface Building {
   totalPeople():   number;
 
   // For renderer
-  peopleAtFloor(floor: number): Person[];
+  peopleVisibleAtFloor(floor: number): Person[];
 }

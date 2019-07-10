@@ -21,14 +21,11 @@ export class BasicController implements Controller {
   arrived(lift: Lift) {
     const peopleToDisembark = lift.people.filter(p => p.desiredFloor === lift.position);
     this.building.disembarkPeople(peopleToDisembark);
-    lift.people = lift.people.filter(p => peopleToDisembark.indexOf(p) === -1);
+    lift.peopleLeaving(peopleToDisembark);
 
     const liftCapacity = lift.capacity - lift.people.length;
-
     const embarkedPeople = this.building.embarkPeopleAt(lift.position, liftCapacity);
-
-    lift.people = lift.people.concat(embarkedPeople);
-    embarkedPeople.forEach(p => lift.addStop(p.desiredFloor));
+    lift.peopleEntering(embarkedPeople);
   }
 
   private bestLift(forFloor: number, direction: Direction): Lift {
@@ -36,8 +33,8 @@ export class BasicController implements Controller {
 
     const headedRightWay = this.lifts.filter((l) => {
       return (l.state === LiftState.MovingUp && l.position < forFloor) ||
-      (l.state === LiftState.MovingDown && l.position > forFloor) ||
-      l.free;
+             (l.state === LiftState.MovingDown && l.position > forFloor) ||
+             l.free;
     });
 
     if (headedRightWay.length) {

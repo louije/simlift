@@ -6,6 +6,10 @@
     "count": 2,
     "speed": 0.0625
   },
+  "people": {
+    "time_to_enter": 500,
+    "time_to_leave": 500
+  },
   "events": {
     "probability": {
       "new_person": 2,

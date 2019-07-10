@@ -6,9 +6,12 @@ import { Person } from "../implementations/person";
 export class BasicLift implements Lift {
   private liftPosition: number = 0;
   private stops: number[] = [];
+  private peopleInside:  Person[] = [];
+  private leavingQueue:  Person[] = [];
+  private enteringQueue: Person[] = [];
+  private boardingTimer;
 
   capacity = Settings.lifts.capacity;
-  people: Person[] = [];
   state: LiftState = LiftState.Open;
 
   get topFloor(): number {
@@ -23,6 +26,15 @@ export class BasicLift implements Lift {
   get free(): boolean {
     return this.stops.length === 0 && this.state === LiftState.Open;
   }
+  get people(): Person[] {
+    return this.peopleInside;
+  }
+  get queueing(): boolean {
+    return !!(this.enteringQueue.length + this.leavingQueue.length);
+  }
+  get peopleVisible(): Person[] {
+    return this.people.filter(p => this.enteringQueue.indexOf(p) === -1).concat(this.leavingQueue);
+  }
 
   constructor(public id: number,
               public controller: Controller,
@@ -36,8 +48,41 @@ export class BasicLift implements Lift {
       case LiftState.Open:
         this.stops = this.stops.filter(s => s !== this.position);
         this.controller.arrived(this);
-        if (this.nextStop !== undefined) {
+        if (this.queueing) {
+          this.state = LiftState.Boarding;
+        } else if (this.nextStop !== undefined) {
           this.state = LiftState.Departing;
+        }
+        break;
+      case LiftState.Boarding:
+        if (!this.queueing) {
+          // debugger;
+          window.clearTimeout(this.boardingTimer);
+          this.boardingTimer = undefined;
+          this.state = this.nextStop ? LiftState.Departing : LiftState.Open;
+        }
+        if (this.boardingTimer) {
+          break;
+        }
+        while (this.leavingQueue.length) {
+          this.boardingTimer = window.setTimeout(
+            () => {
+              this.leavingQueue.pop();
+              this.boardingTimer = undefined;
+            },
+            Settings.people.time_to_leave,
+          );
+          break;
+        }
+        while (this.enteringQueue.length) {
+          this.boardingTimer = window.setTimeout(
+            () => {
+              this.enteringQueue.pop();
+              this.boardingTimer = undefined;
+            },
+            Settings.people.time_to_enter,
+          );
+          break;
         }
         break;
       case LiftState.Departing:
@@ -61,12 +106,25 @@ export class BasicLift implements Lift {
         break;
     }
   }
+
+  peopleLeaving(leavingPeople: Person[]) {
+    this.leavingQueue = leavingPeople;
+    this.peopleInside = this.people.filter(p => leavingPeople.indexOf(p) === -1);
+  }
+
+  peopleEntering(enteringPeople: Person[]) {
+    this.enteringQueue = enteringPeople;
+    this.peopleInside = this.people.concat(enteringPeople);
+    enteringPeople.forEach(p => this.addStop(p.desiredFloor));
+  }
+
   addStop(floor: number): void {
     if (this.stops.indexOf(floor) === -1) {
       this.stops.push(floor);
       this.sortStops();
     }
   }
+
   get nextStop(): number {
     return this.stops[0];
   }
@@ -98,9 +156,10 @@ export class BasicLift implements Lift {
       return LiftState.MovingUp;
     }
 
-    console.warn("directionFor called when for current floor", floor, this);
+    // Called for current floor
     return LiftState.Open;
   }
+
   currentLevel(direction: Direction): number | undefined {
     const position = this.position;
     if (Math.ceil(position) === position) {

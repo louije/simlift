@@ -4,6 +4,7 @@ import { Controller } from "../interfaces/controller";
 export enum LiftState {
   Arriving = "arriving",
   Open = "open",
+  Boarding = "boarding",
   Departing = "departing",
   MovingUp = "movingUp",
   MovingDown = "movingDown",
@@ -19,14 +20,21 @@ export interface Lift {
   id: number;
   controller: Controller;
   floorCount: number;
+
+  readonly people: Person[];
+  readonly peopleVisible: Person[];
+  readonly leavingQueue:  Person[];
+  readonly enteringQueue: Person[];
+
   capacity: number;
-  people: Person[];
   state: LiftState;
   position: number;
   free: boolean;
 
   tick(): void;
   addStop(floor: number): void;
+  peopleLeaving(people: Person[]);
+  peopleEntering(people: Person[]);
 }
 
 export function directionBetween(from: number, to: number): Direction {

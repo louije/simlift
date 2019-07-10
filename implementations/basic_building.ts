@@ -45,11 +45,17 @@ export class BasicBuilding implements Building {
   averageInLift(): number { return 0; }
   totalPeople():   number { return 0; }
 
-  // Rendering & testing
   get waitingPeople(): Person[] {
     return this.activePeople.filter(p => !p.tsEmbarked);
   }
   peopleAtFloor(floor: number): Person[] {
     return this.waitingPeople.filter(p => p.currentFloor === floor);
+  }
+
+  // For the rendering.
+  peopleVisibleAtFloor(floor: number): Person[] {
+    const liftsAtFloor = this.lifts.filter(l => l.position === floor);
+    const peopleQueueing = liftsAtFloor.map(l => l.enteringQueue).flat();
+    return this.peopleAtFloor(floor).concat(peopleQueueing);
   }
 }

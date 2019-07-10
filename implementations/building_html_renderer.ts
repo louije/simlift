@@ -10,7 +10,7 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
   building: Building;
 
   shaft(lift: Lift): string {
-    const peopleHTML = this.people(lift.people, "traveling");
+    const peopleHTML = this.people(lift.peopleVisible, "traveling");
     return `
       <div class="Shaft" data-shaft-id="${lift.id}">
         <div class="Lift Lift--${lift.state}"
@@ -31,7 +31,9 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
   }
 
   people(ppl: Person[], className: string): string {
-    return ppl.map(p => `<div class="Person Person--${className}">${p.desiredFloor}</div>`).join("");
+    return ppl.map((p) => {
+      return `<div class="Person Person--${className}">${p.desiredFloor}</div>`;
+    }).join("");
   }
 
   floor(level: number, people: Person[] = []): string {
@@ -45,7 +47,7 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
   floors(floors: number): string {
     // Could be better done with a ViewModel
     const floorsHTML = arrayTo(floors - 1).map((floor) => {
-      return this.floor(floor, this.building.peopleAtFloor(floor));
+      return this.floor(floor, this.building.peopleVisibleAtFloor(floor));
     }).reverse().join("");
 
     return `
