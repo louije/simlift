@@ -100,8 +100,6 @@ body {
 .Shaft {
   background: rgba(200,200,0,.35);
   width: 5rem;
-  // margin: 0 3rem;
-  // padding: .5rem;
 }
 
 .Lift {
@@ -116,37 +114,5 @@ body {
   top: calc(100% - var(--height));
   transform: translateY(calc(-100% * var(--lift-position)));
 
-  // transition: transform .25s ease;
-  // &:before {
-  //   color: white;
-  //   top: .25rem;
-  //   left: .25rem;
-  //   position: absolute;
-  //   content: attr(data-id);
-  //   font-size: 1rem;
-  //   font-weight: bold;
-  // }
+  flex-direction: column;
 }
-
-/*
-.Lift--arriving,
-.Lift--movingUp,
-.Lift--movingDown {
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: calc(50% - 1px);
-    background: rgba(50,50,50,.75);
-    z-index: -1;
-  }
-  &:before {
-    // left: 0;
-  }
-  &:after {
-    // right: 0;
-  }
-}
-*/

@@ -1,14 +1,14 @@
 {
-  "refresh_rate": 50,
+  "refresh_rate": 60,
+  "people": {
+    "time_to_enter": 300,
+    "time_to_leave": 300
+  },
   "floors": 9,
   "lifts": {
     "capacity": 8,
     "count": 2,
     "speed": 0.0625
-  },
-  "people": {
-    "time_to_enter": 500,
-    "time_to_leave": 500
   },
   "events": {
     "probability": {
