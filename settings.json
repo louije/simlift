@@ -2,10 +2,17 @@
   "refresh_rate": 50,
   "floors": 9,
   "lifts": {
-    "count": 3,
+    "capacity": 8,
+    "count": 2,
     "speed": 0.0625
   },
-  "events_probability": {
-    "new_person": 1
+  "events": {
+    "probability": {
+      "new_person": 2,
+      "mass_exit": 0.0625,
+      "mass_arrival": 0.0625
+    },
+    "mass_arrival_max": 10,
+    "mass_exit_max": 10
   }
 }

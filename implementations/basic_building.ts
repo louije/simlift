@@ -26,8 +26,8 @@ export class BasicBuilding implements Building {
   }
 
   // Messages from controller
-  embarkPeopleAt(floor: number): Person[] {
-    const people = this.peopleAtFloor(floor);
+  embarkPeopleAt(floor: number, capacity: number): Person[] {
+    const people = this.peopleAtFloor(floor).slice(0, capacity);
     people.forEach(p => p.tsEmbarked = Date.now());
     return people;
   }

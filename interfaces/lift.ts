@@ -10,9 +10,9 @@ export enum LiftState {
 }
 
 export enum Direction {
-  None,
-  Up,
-  Down,
+  None = "open",
+  Up = "movingUp",
+  Down = "movingDown" ,
 }
 
 export interface Lift {
@@ -23,7 +23,16 @@ export interface Lift {
   people: Person[];
   state: LiftState;
   position: number;
+  free: boolean;
 
   tick(): void;
   addStop(floor: number): void;
+}
+
+export function directionBetween(from: number, to: number): Direction {
+  if (from < to) { return Direction.Down; }
+  if (from < to) { return Direction.Up; }
+
+  // Same floor
+  return Direction.None;
 }

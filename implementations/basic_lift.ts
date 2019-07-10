@@ -7,7 +7,7 @@ export class BasicLift implements Lift {
   private liftPosition: number = 0;
   private stops: number[] = [];
 
-  capacity = 1000;
+  capacity = Settings.lifts.capacity;
   people: Person[] = [];
   state: LiftState = LiftState.Open;
 
@@ -19,6 +19,9 @@ export class BasicLift implements Lift {
   }
   set position(newValue: number) {
     this.liftPosition = Math.max(Math.min(this.topFloor, newValue), 0);
+  }
+  get free(): boolean {
+    return this.stops.length === 0 && this.state === LiftState.Open;
   }
 
   constructor(public id: number,
@@ -33,25 +36,25 @@ export class BasicLift implements Lift {
       case LiftState.Open:
         this.stops = this.stops.filter(s => s !== this.position);
         this.controller.arrived(this);
-        if (this.nextStop() !== undefined) {
+        if (this.nextStop !== undefined) {
           this.state = LiftState.Departing;
         }
         break;
       case LiftState.Departing:
-        this.state = this.directionFor(this.nextStop());
+        this.state = this.directionFor(this.nextStop);
         break;
       case LiftState.MovingUp:
         this.position += Settings.lifts.speed;
-        if (this.atLevel(this.nextStop(), Direction.Up)) {
-          this.position = this.nextStop();
+        if (this.atLevel(this.nextStop, Direction.Up)) {
+          this.position = this.nextStop;
           this.state = LiftState.Arriving;
           break;
         }
         break;
       case LiftState.MovingDown:
         this.position -= Settings.lifts.speed;
-        if (this.atLevel(this.nextStop(), Direction.Down)) {
-          this.position = this.nextStop();
+        if (this.atLevel(this.nextStop, Direction.Down)) {
+          this.position = this.nextStop;
           this.state = LiftState.Arriving;
           break;
         }
@@ -59,14 +62,34 @@ export class BasicLift implements Lift {
     }
   }
   addStop(floor: number): void {
-    // stupid implementation for now. don't prioritize.
     if (this.stops.indexOf(floor) === -1) {
       this.stops.push(floor);
+      this.sortStops();
     }
   }
-  nextStop(): number {
+  get nextStop(): number {
     return this.stops[0];
   }
+
+  sortStops() {
+    const pos = this.position;
+    let sortedStops: number[];
+
+    const stopsBelow = this.stops.filter(s => s < pos);
+    const stopsAbove = this.stops.filter(s => s >= pos);
+
+    if (this.state === LiftState.MovingDown) {
+      sortedStops = stopsBelow.sort((a, b) => a - b).concat(stopsAbove.sort());
+    } else if (this.state === LiftState.MovingUp) {
+      sortedStops = stopsAbove.sort().concat(stopsBelow.sort((a, b) => a - b));
+    } else {
+      // Sort by proximity? really?
+      sortedStops = this.stops.sort((a, b) => Math.abs(a - pos) - Math.abs(b - pos));
+    }
+
+    this.stops = sortedStops;
+  }
+
   directionFor(floor: number): LiftState {
     if (floor < this.position) {
       return LiftState.MovingDown;

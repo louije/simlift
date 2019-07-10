@@ -16,7 +16,7 @@ export interface Building {
   addPerson(person: Person): void;
 
   // Communication with controller
-  embarkPeopleAt(floor: number): Person[];
+  embarkPeopleAt(floor: number, capacity: number): Person[];
   disembarkPeople(people: Person[]): void;
 
   // Stats

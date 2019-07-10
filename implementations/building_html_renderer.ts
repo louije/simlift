@@ -13,7 +13,9 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
     const peopleHTML = this.people(lift.people, "traveling");
     return `
       <div class="Shaft" data-shaft-id="${lift.id}">
-        <div class="Lift Lift--${lift.state}" style="--lift-position: ${lift.position}">
+        <div class="Lift Lift--${lift.state}"
+             style="--lift-position: ${lift.position}"
+             data-id="${lift.id}">
           ${peopleHTML}
         </div>
       </div>
@@ -54,8 +56,9 @@ export class BuildingHTMLRenderer implements BuildingRenderer {
   }
 
   root(floors: number, lifts: Lift[]): string {
+    const sortedLifts = lifts.sort((a, b) => a.id - b.id);
     const floorsHTML = this.floors(floors);
-    const shaftsHTML = this.shafts(lifts);
+    const shaftsHTML = this.shafts(sortedLifts);
 
     return `
       <div class="Building" style="--floors: ${floors}; --lifts: ${lifts.length}">
