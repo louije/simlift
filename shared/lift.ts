@@ -1,5 +1,5 @@
-import { Person } from "../implementations/person";
-import { Controller } from "../interfaces/controller";
+import { Person } from "./person";
+import { Controller } from "./controller";
 
 export enum LiftState {
   Arriving = "arriving",

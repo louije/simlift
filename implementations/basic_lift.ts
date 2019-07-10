@@ -1,7 +1,7 @@
 import Settings from "../settings.json";
-import { Lift, LiftState, Direction } from "../interfaces/lift";
-import { Controller } from "../interfaces/controller";
-import { Person } from "../implementations/person";
+import { Lift, LiftState, Direction } from "../shared/lift";
+import { Controller } from "../shared/controller";
+import { Person } from "../shared/person";
 
 export class BasicLift implements Lift {
   private liftPosition: number = 0;

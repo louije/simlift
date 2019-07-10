@@ -1,9 +1,32 @@
-import { Building } from "../interfaces/building";
-import { Lift } from "../interfaces/lift";
-import { Controller } from "../interfaces/controller";
-import { Person } from "../implementations/person";
+import { Lift } from "./lift";
+import { Controller } from "./controller";
+import { Person } from "./person";
 
-export class BasicBuilding implements Building {
+export interface Buildingish {
+  controller: Controller;
+  floors: number;
+  lifts:  Lift[];
+
+  // World event
+  tick(): void;
+  addPerson(person: Person): void;
+
+  // Communication with controller
+  embarkPeopleAt(floor: number, capacity: number): Person[];
+  disembarkPeople(people: Person[]): void;
+  peopleAtFloor(floor: number): Person[];
+
+  // Stats
+  averageTrip():   number;
+  averageWait():   number;
+  averageInLift(): number;
+  totalPeople():   number;
+
+  // For renderer
+  peopleVisibleAtFloor(floor: number): Person[];
+}
+
+export class Building implements Buildingish {
   private activePeople: Person[] = [];
   private disembarkedPeople: Person[] = [];
   private get nextPersonID(): number {

@@ -1,10 +1,12 @@
 import { arrayTo } from "../util/array_utils";
+import { Building } from "./building";
+import { Lift } from "./lift";
+import { Person } from "./person";
 
-import { BuildingRenderer } from "../interfaces/building_renderer";
-import { Building } from "../interfaces/building";
-import { Lift } from "../interfaces/lift";
-
-import { Person } from "../implementations/person";
+export interface BuildingRenderer {
+  building: Building;
+  render(destination: HTMLElement): void;
+}
 
 export class BuildingHTMLRenderer implements BuildingRenderer {
   building: Building;

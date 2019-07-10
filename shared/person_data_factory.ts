@@ -1,8 +1,8 @@
 /* tslint:disable:align */
 
 import { arrayTo } from "../util/array_utils";
-import { Building } from "../interfaces/building";
-import { Person } from "../implementations/person";
+import { Building } from "./building";
+import { Person } from "./person";
 
 export function personDataFactory(building: Building): Person {
   const from = Math.floor(Math.random() * building.floors);

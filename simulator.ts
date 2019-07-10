@@ -1,10 +1,10 @@
 import Settings from "./settings.json";
 import { arrayTo } from "./util/array_utils";
-import { Building } from "./interfaces/building";
-import { BuildingRenderer } from "./interfaces/building_renderer";
-import { Lift } from "./interfaces/lift";
-import { Person } from "./implementations/person";
-import { personDataFactory, peopleDataDactory } from "./implementations/person_data_factory";
+import { Building } from "./shared/building";
+import { BuildingRenderer } from "./shared/building_renderer";
+import { Lift } from "./shared/lift";
+import { Person } from "./shared/person";
+import { personDataFactory, peopleDataDactory } from "./shared/person_data_factory";
 
 export class Simulator {
 

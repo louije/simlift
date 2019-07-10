@@ -1,7 +1,7 @@
 import { arraySample } from "../util/array_utils";
-import { Controller } from "../interfaces/controller";
-import { Lift, LiftState, Direction, directionBetween } from "../interfaces/lift";
-import { Building } from "../interfaces/building";
+import { Controller } from "../shared/controller";
+import { Lift, LiftState, Direction, directionBetween } from "../shared/lift";
+import { Building } from "../shared/building";
 
 export class BasicController implements Controller {
   building: Building;

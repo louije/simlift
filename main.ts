@@ -4,14 +4,13 @@ import { arrayTo } from "./util/array_utils";
 
 import { Simulator } from "./simulator";
 
-import { Lift } from "./interfaces/lift";
-import { Controller } from "./interfaces/controller";
-import { Building } from "./interfaces/building";
+import { Lift } from "./shared/lift";
+import { Controller } from "./shared/controller";
+import { Building, BasicBuilding } from "./shared/building";
+import { BuildingHTMLRenderer } from "./shared/building_renderer";
 
-import { BasicBuilding } from "./implementations/basic_building";
 import { BasicLift } from "./implementations/basic_lift";
 import { BasicController } from "./implementations/basic_controller";
-import { BuildingHTMLRenderer } from "./implementations/building_html_renderer";
 
 declare global {
   interface Window {
