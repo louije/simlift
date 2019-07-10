@@ -3,7 +3,7 @@ import { Controller } from "../shared/controller";
 import { Lift, LiftState, Direction, directionBetween } from "../shared/lift";
 import { Building } from "../shared/building";
 
-export class BasicController implements Controller {
+export class NaiveController implements Controller {
   building: Building;
   get lifts() {
     return this.building.lifts;
@@ -52,6 +52,7 @@ export class BasicController implements Controller {
   private sortLifts(closestTo: number, a: Lift, b: Lift) {
     const aDist = Math.abs(a.position - closestTo);
     const bDist = Math.abs(b.position - closestTo);
+
     if (aDist < bDist) {
       // console.log(`Lift id ${a.id} is closer to floor ${closestTo} than lift ${b.id}`);
       return -1;
